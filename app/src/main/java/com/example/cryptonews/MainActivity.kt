@@ -1,12 +1,13 @@
 package com.example.cryptonews
 
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.cryptonews.databinding.ActivityMainBinding
-
 
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
@@ -24,8 +25,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     private fun fetchData() {
-        val url =
-            "https://newsapi.org/v2/everything?q=crypto&apiKey=0687e7c3cec94ba1b902d086ab20cd33"
+        val url = "https://newsapi.org/v2/everything?q=crypto&apiKey=0687e7c3cec94ba1b902d086ab20cd33"
         val jsonObjectRequest = object : JsonObjectRequest(Request.Method.GET, url, null,
             {
                 val newsJsonArray = it.getJSONArray("articles")
@@ -57,7 +57,9 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     override fun onItemClicked(item: News) {
-
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
 
 }
